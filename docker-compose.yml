@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  backend:
+    build: .
+    container_name: altravionix-backend
+    ports:
+      - "3214:3214"
+    env_file:
+      - .env
+    restart: always
