@@ -1,0 +1,28 @@
+const nodemailer = require("nodemailer");
+
+const sendEmail = async ({ subject, html }) => {
+  const transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    secure: true, 
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+    tls: {
+      rejectUnauthorized: false, r
+    },
+  });
+
+  await transporter.verify();
+  console.log("SMTP Connected");
+
+  await transporter.sendMail({
+    from: `"Altravionix" <${process.env.EMAIL_USER}>`,
+    to: process.env.EMAIL_TO,
+    subject,
+    html,
+  });
+};
+
+module.exports = sendEmail;

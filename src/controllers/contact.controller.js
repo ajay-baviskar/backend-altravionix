@@ -1,4 +1,6 @@
 const Contact = require("../models/contact.model");
+const sendEmail = require("../utils/sendEmail");
+const contactEmailTemplate = require("../utils/contactEmailTemplate");
 
 exports.createContact = async (req, res) => {
   try {
@@ -11,6 +13,7 @@ exports.createContact = async (req, res) => {
       });
     }
 
+    // Save to DB
     const contact = await Contact.create({
       name,
       email,
@@ -18,12 +21,19 @@ exports.createContact = async (req, res) => {
       message,
     });
 
+    // Send Email
+    await sendEmail({
+      subject: "📩 New Contact Form Submission - Altravionix",
+      html: contactEmailTemplate({ name, email, service, message }),
+    });
+
     res.status(201).json({
       success: true,
       message: "Contact form submitted successfully",
-      data: contact,
     });
   } catch (error) {
+    console.error("Email Error:", error);
+
     res.status(500).json({
       success: false,
       message: "Server error",
