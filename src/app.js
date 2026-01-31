@@ -5,16 +5,13 @@ const contactRoutes = require("./routes/contact.routes");
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Routes
 app.use("/api", contactRoutes);
 
-// Health check
 app.get("/", (req, res) => {
-  res.send("🚀 API running successfully");
+  res.send("🚀 Altravionix API running");
 });
 
 module.exports = app;
